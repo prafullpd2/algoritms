@@ -24,7 +24,7 @@
  *     1, 2, 7, 9, 11, 12, 13,20 
  * Merging of above two arrays takes almost n number os steps. Thus Merging is of Θ(n)
  * 
- * Merge (Arr[], startIndexofFirstArry, endIndexofFirstArray, endIndexifWholeArrayA )
+ * Merge (Arr[], startIndexofFirstArry, endIndexofFirstArray, endIndexOfWholeArray )
  * i.e. Merge(Arr[], p, q, r) where p<=q<r;
  * Merge Assumes that Arr[p,...q], Arr[q+1,...r] are sorted.
  * Merge procedure takes n steps where n = r-p+1. Thus Merging is of Θ(n)
@@ -53,7 +53,7 @@
  * 
  * PSEUDOCODE - 
  * 
- * Mearge(arr, p, q, r)
+ * Merge(arr, p, q, r)
  * n1 = q - p + 1 
  * n2 = r - q
  * Let L[1, ... n1 + 1] and R[1... n2 +1] be two arrays
@@ -73,7 +73,7 @@
  *          A[k] = R[j]
  *          j = j + 1
  *
- * 
+ * //MergeSort(arr, startIndexofWholeArray, endIndexofWholeArray)
  * MergeSort(arr, p, r)
  * if p<r
  *      q = floor((p+r)/2)
@@ -113,4 +113,126 @@
  * 
  * 
  */
+function merge(arr, startIndexofFirstArry, endIndexofFirstArray, lastIndexofWholeArray){
+    let p = startIndexofFirstArry;
+    let q = endIndexofFirstArray;
+    let r = lastIndexofWholeArray;
+    let left = [];
+    let right = [];
+    let i = 0;
+    let j = 0;
+    let k = startIndexofFirstArry;
 
+    for( ; i<=q-p; i++){
+        left[i] = arr[p+i];
+    }
+    i = 0;
+    for( ; i<=r-q-1; i++){
+        right[i] = arr[q+1+i];
+    }
+
+    i = 0;
+    j = 0;
+
+    for( ; k<= lastIndexofWholeArray; k++){
+        if(j==right.length || (i!=left.length && left[i]<right[j])){
+            arr[k] = left[i];
+            i++;
+        }
+        else{
+            arr[k] = right[j];
+            j++;
+        }
+    }
+
+};
+
+function mergeSort(arr, startIndexofWholeArray, lastIndexofWholeArray ) {
+    if(startIndexofWholeArray<lastIndexofWholeArray){
+        let q = Math.floor((startIndexofWholeArray + lastIndexofWholeArray)/2)
+        mergeSort(arr, startIndexofWholeArray,q );
+        mergeSort(arr, q+1, lastIndexofWholeArray );
+        merge(arr, startIndexofWholeArray, q, lastIndexofWholeArray);
+    }
+}
+var x = [22,8,0,5,2,3,1,1,1,1,3,3,3,6,6,12,12,3,80];
+
+mergeSort(x, 0, x.length-1);
+
+//console.log(x);
+
+
+
+
+
+
+
+
+
+
+
+
+/**------------------------------------------------------------------------- */
+/**Mergesort with compare function */
+
+// function comparefn(leftObj, rightObj){
+
+//     return rightObj.a - leftObj.a ;
+// }
+
+var x = [{a:22},{a:2}, {a:90}, {a:0}, {a:5}];
+
+//mergeSort(x, 0, x.length-1);
+
+function initiateMergeSort(arr, comparefn){
+    function merge(arr, startIndexofFirstArry, endIndexofFirstArray, lastIndexofWholeArray){
+        let p = startIndexofFirstArry;
+        let q = endIndexofFirstArray;
+        let r = lastIndexofWholeArray;
+        let left = [];
+        let right = [];
+        let i = 0;
+        let j = 0;
+        let k = startIndexofFirstArry;
+    
+        for( ; i<=q-p; i++){
+            left[i] = arr[p+i];
+        }
+        i = 0;
+        for( ; i<=r-q-1; i++){
+            right[i] = arr[q+1+i];
+        }
+    
+        i = 0;
+        j = 0;
+    
+        for( ; k<= lastIndexofWholeArray; k++){
+            if(j==right.length || (i!=left.length && comparefn(left[i],right[j])>0)){
+                arr[k] = left[i];
+                i++;
+            }
+            else{
+                arr[k] = right[j];
+                j++;
+            }
+        }
+    
+    };
+
+    function mergeSort(arr, startIndexofWholeArray, lastIndexofWholeArray ) {
+        if(startIndexofWholeArray<lastIndexofWholeArray){
+            let q = Math.floor((startIndexofWholeArray + lastIndexofWholeArray)/2)
+            mergeSort(arr, startIndexofWholeArray,q );
+            mergeSort(arr, q+1, lastIndexofWholeArray );
+            merge(arr, startIndexofWholeArray, q, lastIndexofWholeArray);
+        }
+    }
+    
+    mergeSort(arr, 0, arr.length-1);
+}
+initiateMergeSort(x, function (leftObj, rightObj){
+
+    return rightObj.a - leftObj.a ;
+});
+
+console.log(x);
