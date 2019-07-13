@@ -78,3 +78,79 @@
  *                  return { right-low, right-high, right-sum }
  *          else return { cross-low, cross-high, cross-sum }
  */
+
+
+ function maxCrossingSubarray(arr, low, mid, high) {
+    let leftSum = Number.NEGATIVE_INFINITY;
+    let rightSum = Number.NEGATIVE_INFINITY;
+
+    let maxLeft=mid;
+    let maxRight = mid+1;
+    sum = 0;
+    for(let i = mid;i>=low; i-- ){
+        sum = sum + arr[i];
+        if(sum>leftSum){
+            leftSum = sum;
+            maxLeft = i;
+        }
+    }
+    sum=0
+    for(let i = mid+1;i<=high; i++ ){
+        sum = sum + arr[i];
+        if(sum>rightSum){
+            rightSum = sum;
+            maxRight = i;
+        }
+    }
+    return {minIndex:maxLeft, maxIndex:maxRight, sum: leftSum+rightSum};
+ }
+
+ function maxSubarray(arr, low, high){
+    if(low==high)
+        return {minIndex:low, maxIndex:high, sum: arr[low]};
+
+    else{
+        const mid = Math.floor((low+high)/2);
+        const leftSubarray = maxSubarray(arr, low, mid);
+        const rightSubarray = maxSubarray(arr, mid+1, high);
+        const crossingSubarray = maxCrossingSubarray(arr, low,mid, high);
+        if(leftSubarray.sum>=rightSubarray.sum && leftSubarray.sum>=crossingSubarray.sum)
+            return leftSubarray;
+        else if(rightSubarray.sum>=leftSubarray.sum && rightSubarray.sum>=crossingSubarray.sum)
+            return rightSubarray;
+        else if(crossingSubarray.sum>=leftSubarray.sum && crossingSubarray.sum>=rightSubarray.sum)
+            return crossingSubarray;
+    }
+ }
+
+ function getChangeArr(arr){
+     let changeArray=[];
+     if(arr.lenght==1)
+        return arr
+     for(let i=1, j=0; i< arr.length; i++){
+         changeArray.push(arr[i]-arr[i-1])
+     }
+     return changeArray;
+ }
+ //var rates = [100, 113,  110,  85,  105,  102,  86,   63,   81,  101,  94,  106,  101,  79,  94,  90,  97]
+  var rates = [100, 100, 100, 100, 99, 100, 110]
+//var rates = [100, 100, 100, 100, 99]
+
+ var changeArr = getChangeArr(rates);
+ var maxSub = maxSubarray(changeArr, 0, changeArr.length-1);
+ console.log(rates);
+ console.log(changeArr);
+ console.log(maxSub);
+ console.log('start investment on '+ (maxSub.minIndex) + 'th day. sell share on ' + (maxSub.maxIndex+1) + 'th day.')
+
+console.log('---------------------------------------------------------------')
+
+ var rates = [100, 113,  110,  85,  105,  102,  86,   63,   81,  101,  94,  106,  101,  79,  94,  90,  97]
+
+ 
+ var changeArr = getChangeArr(rates);
+ var maxSub = maxSubarray(changeArr, 0, changeArr.length-1);
+ console.log(rates);
+ console.log(changeArr);
+ console.log(maxSub);
+ console.log('start investment on '+ (maxSub.minIndex) + 'th day. sell share on ' + (maxSub.maxIndex+1) + 'th day.')
