@@ -1,0 +1,51 @@
+
+//inheritance with Object.create
+
+function IPerson(){
+
+    let person = Object.create(IPerson.prtotypeLikePropertyOnIPerson);
+
+
+    return person;
+    
+}
+
+IPerson.prtotypeLikePropertyOnIPerson = {
+    info: function (){
+        console.log(this);
+    },
+    species: 'Homosapience'
+    
+}
+
+
+let p = IPerson();
+
+p.info();
+
+console.log(p.species)
+
+
+
+//Same Inheritance with new Operator
+
+function IPerson() {
+    
+}
+
+IPerson.prototype = {
+    info: function (){
+        console.log(this);
+    },
+    species: 'Homosapience'
+    
+}
+
+let p = new IPerson();
+
+p.name = 'neo'
+
+p.info();
+
+console.log(p.species)
+
